@@ -17,6 +17,6 @@ resource "aws_instance" "primeira-instancia" {
     instance_type = "t2.micro"
     key_name = "terraform-aws"
     tags = {
-        Name = "primeira-instancia"
+        Name = "terraform ansible python"
     }
 }

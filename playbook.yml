@@ -1,8 +1,25 @@
 - hosts: terraform-ansible
   tasks:
-  - name: criando arquivo
-    copy:
-      dest: /home/ubuntu/index.html
-      content: <h1>Finalmenteee</h1>
-  - name: criando servidor
-    shell: "nohup busybox httpd -f -p 8080 &"
+  - name: instalando python e virtualenv
+    apt: # de instalação
+      pkg: # de pacotes
+        - python3
+        - virtualenv
+      update_cache: yes # atualiza repositórios para instalar versão atualizada dos pacotes
+    become: yes # para rodar como root/sudo
+  - name: instalando dependencias (Django e Django Rest)
+    pip:
+      virtualenv: /home/ubuntu/teste/venv
+      name:
+        - django
+        - djangorestframework
+  - name: iniciando projeto django
+    shell: '. /home/ubuntu/teste/venv/bin/activate; django-admin startproject setup /home/ubuntu/teste' # especifica caminho onde o projeto setup deve ficar
+    # se separar cada linha de comando em um shell, ele fará cada comando em um shell diferente, ou seja, vai resetar o feito anterior, para fazer coisas num mesmo shell, separe por ;
+  - name: alterando o hosts de settings
+    lineinfile:
+      path: /home/ubuntu/teste/setup/settings.py # caminho para acessar arquivo a ser alterado
+      regexp: 'ALLOWED_HOSTS' # encontrar linha com esse conteúdo
+      line: 'ALLOWED_HOSTS = ["*"]' # substituir por esse conteúdo
+      backrefs: yes # caso não encontre a linha fará nada
+
