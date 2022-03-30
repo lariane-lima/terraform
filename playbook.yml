@@ -16,6 +16,7 @@
   - name: iniciando projeto django
     shell: '. /home/ubuntu/teste/venv/bin/activate; django-admin startproject setup /home/ubuntu/teste' # especifica caminho onde o projeto setup deve ficar
     # se separar cada linha de comando em um shell, ele fará cada comando em um shell diferente, ou seja, vai resetar o feito anterior, para fazer coisas num mesmo shell, separe por ;
+    ignore_errors: yes # caso já exista o projeto setup ele vai retornar um erro, mas o ansible nao irá parar de ser executado (deve ser usado com cuidado, mas aqui funciona)
   - name: alterando o hosts de settings
     lineinfile:
       path: /home/ubuntu/teste/setup/settings.py # caminho para acessar arquivo a ser alterado
